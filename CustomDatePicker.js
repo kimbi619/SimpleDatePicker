@@ -7,10 +7,21 @@ export default function CustomDatePicker() {
   const [showModal, setshowModal] = useState(false)
 
   const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date
-    setDate(currentDate)
-    setshowModal(false)
-  }
+    console.log("---------", event);
+    if (event.type === 'set') {
+      const currentDate = selectedDate || date;
+      setDate(currentDate);
+    }
+    if (event.type === 'dismissed') {
+    }
+
+    setshowModal(false);
+  };
+
+  const handleCancel = () => {
+    console.log('cancelling modal');
+    setShowModal(false);
+  };
   return (
     <View>
       <TouchableOpacity onPress={() => setshowModal(true)} style={styles.inputContainerStyle}>
@@ -19,10 +30,25 @@ export default function CustomDatePicker() {
       {
         showModal && (
           <DateTimePicker
-            mode={'datetime'}
-            is24Hour={true}
             value={date || new Date()}
+            mode={'date'}
+            is24Hour={true}
+            display="default"
+            confirmBtnText = "Confirm"
+            cancelBtnText="Close"
+            onTouchCancel={handleCancel}
             onChange={handleDateChange}
+            customStyles={{
+              dateIcon: {
+                position: 'absolute',
+                left: 0,
+                top: 4,
+                marginLeft: 0
+              },
+              dateInput: {
+                marginLeft: 36
+              }
+            }}
           />
         )
       }
